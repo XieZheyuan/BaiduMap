@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{ title }}</title>
+<style type="text/css">
+html{height:100%}
+body{height:100%;margin:0px;padding:0px}
+#container{height:100%}
+</style>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak={{ ak }}">
+</script>
+</head>
+
+<body>
+<div id="container"></div>
+<script type="text/javascript">
+var map = new BMapGL.Map("container");
+
+var point = new BMapGL.Point({{ lon }} , {{ lat }});
+
+map.centerAndZoom(point, {{ level }});
+
+{% if open_zoom %}
+map.enableScrollWheelZoom(true);
+{% endif %}
+map.setTilt({{ tilt }});
+
+{% if is_has_scaleControl %}
+var scaleCtrl = new BMapGL.ScaleControl();
+map.addControl(scaleCtrl);
+{% endif %}
+
+{% if is_has_zoomControl %}
+var zoomCtrl = new BMapGL.ZoomControl();
+map.addControl(zoomCtrl);
+{% endif %}
+
+
+var myArray=new Array();
+var a=0;
+{% for i in point_pos_list %}
+map.addOverlay(new BMapGL.Marker(new BMapGL.Point({{ i }})));
+{%endfor%}
+
+
+</script>
+</body>
+</html>
